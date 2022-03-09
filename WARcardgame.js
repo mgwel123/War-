@@ -23,6 +23,7 @@ class WarMenu {
         this.players = [];
         this.playerDeck1 = [];
         this.playerDeck2 = [];
+        this.roundOfWar = [];
         this.selectedPlayerDeck = null;
     }
     start (){
@@ -68,8 +69,8 @@ class WarMenu {
         for (let i = deck.length - 1; i > 0; i--) {     //this method pulled from https://dev.to/codebubb/how-to-shuffle-an-array-in-javascript-2ikj#:~:text=The%20first%20and%20simplest%20way,)%20%3D%3E%200.5%20%2D%20Math.
             const j = Math.floor(Math.random() * (i + 1));  //called Fisher-Yates Algorithm
             const temp = deck[i];
-            array[i] = array[j];
-            array[j] = temp; 
+            deck[i] = deck[j];
+            deck[j] = temp; 
         }
     }
 
@@ -84,7 +85,15 @@ class WarMenu {
     }
 
     war(){
-        
+        this.roundOfWar.push(this.playerDeck1[0]);
+        this.roundOfWar.push(this.playerDeck2[0]);
+        if (this.roundOfWar[0] > this.roundOfWar[1]) {
+            alert (`${this.roundOfWar[0]} is greater than ${this.roundOfWar[1]}.
+            1 point to ${this.players[0]}`);
+        }else if (this.roundOfWar[0] < this.roundOfWar[1]) {
+            alert (`${this.roundOfWar[1]} is greater than ${this.roundOfWar[0]}.
+            1 point to ${this.players[1]}`);
+        }
     }
 
 }
