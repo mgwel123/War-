@@ -27,23 +27,31 @@ class Deck {
             const oldValue = this.cards[newIndex];
             this.cards[newIndex] = this.cards[i];
             this.cards[i] = oldValue; 
+        }
+    }
 }
+//for testing purposes
+//let newDeck = new Deck;
+//newDeck.populate();
+//console.log(newDeck); 
+//newDeck.shuffle();
+//console.log(newDeck);
 
 class Player {
     constructor(name){
         this.name = name;
+        this.score = 0;
     }
 }
 
-class WarMenu {
+class Menu {
     constructor(){
         this.players = [];
         this.playerDeck1 = [];
         this.playerDeck2 = [];
         this.roundOfWar = [];
-        this.selectedPlayerDeck = null;
     }
-    start (){
+    static start (){
         let selection = this.showMainMenuOptions();
         while (selection != 0) {
             switch (selection) {
@@ -82,15 +90,6 @@ class WarMenu {
         
     }
 
-    shuffle(deck){
-        for (let i = deck.length - 1; i > 0; i--) {     //this method pulled from https://dev.to/codebubb/how-to-shuffle-an-array-in-javascript-2ikj#:~:text=The%20first%20and%20simplest%20way,)%20%3D%3E%200.5%20%2D%20Math.
-            const j = Math.floor(Math.random() * (i + 1));  //called Fisher-Yates Algorithm
-            const temp = deck[i];
-            deck[i] = deck[j];
-            deck[j] = temp; 
-        }
-    }
-
     dealCards(){
         for (let i = 0; i <= this.deck.length; i++){
             if (i % 2 == 0) {
@@ -114,3 +113,5 @@ class WarMenu {
     }
 
 }
+
+Menu.start();
