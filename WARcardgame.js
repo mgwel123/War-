@@ -1,15 +1,32 @@
+const suits = ['spades', 'hearts', 'clubs', 'diamonds']
+const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+
+class Card {
+    constructor(suit, value){
+        this.suit = suit;
+        this.value = value;
+    }
+}
+
+
+
 class Deck {
-    constructor(){
-        this.deck = [];
+    constructor(cards = this.populate()){
+        this.cards = cards;
     }
     populate(){
-        while (this.deck.length < 52){
-            //for loop + increase integer value every 4 indices up to 13
-        }
+       return suits.flatMap(suit => {
+           return values.map( value => {
+                return new Card(suit, value)
+           });
+       });
     }
     shuffle(){
-
-    }
+        for (let i = this.cards.length - 1; i > 0; i--) {     //this method pulled from https://dev.to/codebubb/how-to-shuffle-an-array-in-javascript-2ikj#:~:text=The%20first%20and%20simplest%20way,)%20%3D%3E%200.5%20%2D%20Math.
+            const newIndex = Math.floor(Math.random() * (i + 1));  //called Fisher-Yates Algorithm
+            const oldValue = this.cards[newIndex];
+            this.cards[newIndex] = this.cards[i];
+            this.cards[i] = oldValue; 
 }
 
 class Player {
