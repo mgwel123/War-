@@ -119,12 +119,10 @@ class Menu {
         let deck1Length = this.playerDeck1.cards.length;
         let deck2Length = this.playerDeck2.cards.length;
         while (deck1Length > 0 && deck2Length >0){
-            this.cardCompare = this.playerDeck1.flip();
-            this.cardCompare = this.playerDeck2.flip();
-            console.log(this.cardCompare)
+            this.cardCompare = this.playerDeck2.cards.unshift();
+            this.cardCompare = this.playerDeck1.cards.unshift();
+            console.log(cardCompare);
 
-            this.cardCompare.splice(1, 0, this.playerDeck2[0]); 
-            console.log(this.cardCompare);   
             if (this.cardCompare[0] > this.cardCompare[1]) {
                 alert (`${this.cardCompare[0]} is greater than ${this.cardCompare[1]}.
                 1 point to ${this.players[0]}`);
@@ -136,6 +134,7 @@ class Menu {
                 this.player2Total += 1;
             }
         }
+        
     }
 
 }
