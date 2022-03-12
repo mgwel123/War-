@@ -14,6 +14,11 @@ class Deck {
     constructor(cards = this.populate()){
         this.cards = cards;
     }
+
+    numberOfCards() {
+        return this.cards.length;
+    }
+
     populate(){
        return suits.flatMap(suit => {
            return values.map( value => {
@@ -29,6 +34,10 @@ class Deck {
             this.cards[i] = oldValue; 
         }
     }
+
+    flip(){
+        return this.cards.shift();
+    }
 }
 //for testing purposes
 //let newDeck = new Deck;
@@ -36,6 +45,7 @@ class Deck {
 //console.log(newDeck); 
 //newDeck.shuffle();
 //console.log(newDeck);
+
 
 class Player {
     constructor(name){
@@ -49,9 +59,13 @@ class Menu {
         this.players = [];
         this.playerDeck1 = [];
         this.playerDeck2 = [];
-        this.roundOfWar = [];
+        this.cardCompare = [];
+        this.discardPile = [];
+        this.player1Total = 0;
+        this.player2Total = 0;
     }
-    static start (){
+
+    start (){
         let selection = this.showMainMenuOptions();
         while (selection != 0) {
             switch (selection) {
@@ -59,12 +73,9 @@ class Menu {
                     this.createPlayers();
                     break;
                 case '2':
-                    this.shuffle();
-                    break;
-                case '3':
                     this.dealCards();
                     break;
-                case '4':
+                case '3':
                     this.war();
                     break;
                 default:
@@ -78,40 +89,56 @@ class Menu {
         return prompt(`
         0) Exit
         1) Create Players
-        2) Shuffle the Deck
-        3) Deal Cards
-        4) War!
+        2) Deal Cards
+        3) War!
          `);
     }
 
     createPlayers(){
-        let name = prompt(`Please state your name:`);
-        this.players.push(new Player(name));
+        let playerOne = prompt(`Player 1, please state your name:`);
+        this.players.push(new Player(playerOne));
+        let playerTwo = prompt(`Player 2, please state your name:`);
+        this.players.push(new Player(playerTwo));
         
     }
 
     dealCards(){
-        for (let i = 0; i <= this.deck.length; i++){
-            if (i % 2 == 0) {
-                this.playerDeck1.push(this.deck[i]);
-            }else {
-                this.playerDeck2.push(this.deck[i]);
-            }
-        }
+        const deck = new Deck();
+        deck.shuffle();
+
+        const deckMidpoint = Math.ceil(deck.numberOfCards() / 2);
+        this.playerDeck1 = new Deck(deck.cards.slice(0, deckMidpoint));
+        this.playerDeck2 = new Deck(deck.cards.slice(deckMidpoint, deck.numberOfCards()));
+
+        console.log(this.playerDeck1);
+        console.log(this.playerDeck2);
     }
 
+
     war(){
-        this.roundOfWar.push(this.playerDeck1[0]);
-        this.roundOfWar.push(this.playerDeck2[0]);
-        if (this.roundOfWar[0] > this.roundOfWar[1]) {
-            alert (`${this.roundOfWar[0]} is greater than ${this.roundOfWar[1]}.
-            1 point to ${this.players[0]}`);
-        }else if (this.roundOfWar[0] < this.roundOfWar[1]) {
-            alert (`${this.roundOfWar[1]} is greater than ${this.roundOfWar[0]}.
-            1 point to ${this.players[1]}`);
+        let deck1Length = this.playerDeck1.cards.length;
+        let deck2Length = this.playerDeck2.cards.length;
+        while (deck1Length > 0 && deck2Length >0){
+            this.cardCompare = this.playerDeck1.flip();
+            this.cardCompare = this.playerDeck2.flip();
+            console.log(this.cardCompare)
+
+            this.cardCompare.splice(1, 0, this.playerDeck2[0]); 
+            console.log(this.cardCompare);   
+            if (this.cardCompare[0] > this.cardCompare[1]) {
+                alert (`${this.cardCompare[0]} is greater than ${this.cardCompare[1]}.
+                1 point to ${this.players[0]}`);
+                this.player1Total += 1;
+
+            }else if (this.cardCompare[0] < this.cardCompare[1]) {
+                alert (`${this.cardCompare[1]} is greater than ${this.cardCompare[0]}.
+                1 point to ${this.players[1]}`);
+                this.player2Total += 1;
+            }
         }
     }
 
 }
 
-Menu.start();
+let newMenu = new Menu;
+newMenu.start();
