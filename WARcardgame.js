@@ -1,5 +1,20 @@
 const suits = ['spades', 'hearts', 'clubs', 'diamonds']
 const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+const cardValueMap = {
+    '2': 2,
+    '3': 3,
+    '4': 4,
+    '5': 5,
+    '6': 6,
+    '7': 7,
+    '8': 8,
+    '9': 9,
+    '10': 10,
+    'J': 11,
+    'Q': 12,
+    'K': 13,
+    'A': 14
+}
 
 class Card {
     constructor(suit, value){
@@ -116,28 +131,42 @@ class Menu {
 
 
     war(){
-        let deck1Length = this.playerDeck1.cards.length;
-        let deck2Length = this.playerDeck2.cards.length;
-        while (deck1Length > 0 && deck2Length >0){
-            this.cardCompare.push(this.playerDeck1.cards[0]);
+        let deck1Length = this.playerDeck1.cards.length;   //this is the latest version of this function and is not finished.
+        let deck2Length = this.playerDeck2.cards.length;    
+        while (deck1Length > 0 && deck2Length >0){          
+            this.cardCompare.push(this.playerDeck1.cards[0]);  
             this.cardCompare.push(this.playerDeck2.cards[0]);
             console.log(this.cardCompare);
-
-
-            if (this.cardCompare.card.value[0] > this.cardCompare.card.value[1]) {
-                alert (`${this.cardCompare.card.value[0]} is greater than ${this.cardCompare.card.value[1]}.
-                1 point to ${this.players[0]}`);
+                                                        
+            if (this.roundWinner(this.cardCompare[0], this.cardCompare[1])) {                   //still trying to work out the logic correctly so that the alerts
+                alert (`${this.cardCompare.value[0]} is greater than ${this.cardCompare.value[0]}.  
+                1 point to ${this.players[0]}`);                                                //actually read the values after they are compared
+                this.discardPile = this.playerDeck1.cards.splice(0,1);                          //for now, they alert "[object, object]"
+                this.discardPile = this.playerDeck2.cards.splice(0,1);
                 this.player1Total += 1;
-                this.discardPile = this.cardCompare.splice(0,2);
+                return this.discardPile;
+                
 
-            }else if (this.cardCompare.card.value[0] < this.cardCompare.card.value[1]) {
-                alert (`${this.cardCompare.card.value[1]} is greater than ${this.cardCompare.card.value[0]}.
+            }else if (this.roundWinner(this.cardCompare[1], this.cardCompare[0])) {
+                alert (`${this.cardCompare.value[1]} is greater than ${this.cardCompare.value[0]}.
                 1 point to ${this.players[1]}`);
+                this.discardPile = this.playerDeck1.cards.splice(0,1);
+                this.discardPile = this.playerDeck2.cards.splice(0,1);
                 this.player2Total += 1;
-                this.discardPile = this.cardCompare.splice(0,2);
+                return this.discardPile;
+
+            }else {
+                alert (`Draw. No points awarded`);
+                this.discardPile = this.playerDeck1.cards.splice(0,1);
+                this.discardPile = this.playerDeck2.cards.splice(0,1);
+                return this.discardPile
+                 
             }
         }
         
+    }
+    roundWinner(cardOne, cardTwo) {
+        return cardValueMap[cardOne.value] > cardValueMap[cardTwo.value];
     }
 
 }
