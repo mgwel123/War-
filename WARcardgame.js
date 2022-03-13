@@ -107,8 +107,8 @@ class Menu {
         deck.shuffle();
 
         const deckMidpoint = Math.ceil(deck.numberOfCards() / 2);
-        this.playerDeck1 = new Deck(deck.cards.slice(0, deckMidpoint));
-        this.playerDeck2 = new Deck(deck.cards.slice(deckMidpoint, deck.numberOfCards()));
+        this.playerDeck1 = new Deck(deck.cards.splice(0, deckMidpoint));
+        this.playerDeck2 = new Deck(deck.cards);
 
         console.log(this.playerDeck1);
         console.log(this.playerDeck2);
@@ -119,19 +119,22 @@ class Menu {
         let deck1Length = this.playerDeck1.cards.length;
         let deck2Length = this.playerDeck2.cards.length;
         while (deck1Length > 0 && deck2Length >0){
-            this.cardCompare = this.playerDeck2.cards.unshift();
-            this.cardCompare = this.playerDeck1.cards.unshift();
-            console.log(cardCompare);
+            this.cardCompare.push(this.playerDeck1.cards[0]);
+            this.cardCompare.push(this.playerDeck2.cards[0]);
+            console.log(this.cardCompare);
 
-            if (this.cardCompare[0] > this.cardCompare[1]) {
-                alert (`${this.cardCompare[0]} is greater than ${this.cardCompare[1]}.
+
+            if (this.cardCompare.card.value[0] > this.cardCompare.card.value[1]) {
+                alert (`${this.cardCompare.card.value[0]} is greater than ${this.cardCompare.card.value[1]}.
                 1 point to ${this.players[0]}`);
                 this.player1Total += 1;
+                this.discardPile = this.cardCompare.splice(0,2);
 
-            }else if (this.cardCompare[0] < this.cardCompare[1]) {
-                alert (`${this.cardCompare[1]} is greater than ${this.cardCompare[0]}.
+            }else if (this.cardCompare.card.value[0] < this.cardCompare.card.value[1]) {
+                alert (`${this.cardCompare.card.value[1]} is greater than ${this.cardCompare.card.value[0]}.
                 1 point to ${this.players[1]}`);
                 this.player2Total += 1;
+                this.discardPile = this.cardCompare.splice(0,2);
             }
         }
         
